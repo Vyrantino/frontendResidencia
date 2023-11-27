@@ -1,3 +1,11 @@
+/**
+ * FormularioDatos va a preguntar al usuario los datos que le hacen falta
+ * Necesita saber que datos existen
+ * 
+ * Que datos le faltan al usuario
+ * Crear los nuevos DatosUsuario
+ * 
+ */
 import axios from 'axios' ; 
 require('dotenv').config();
 
@@ -5,7 +13,7 @@ const apiUrlDatosUsuario = process.env.REACT_APP_API_URL + "datos-usuarios/";
 const apiUrlDatos = process.env.REACT_APP_API_URL + "datos/"; 
 
 
-export const getDatosFaltantesUsuario = async ( idUsuario ) =>{
+export const getDatosFaltantesUsuario = async ( idUsuario ) =>{ // Obtiene una lista de datos faltantes
     try{
         const response = await axios.get( apiUrlDatosUsuario + 'datosFaltantes/' +idUsuario ) ;
         const datosUsuario = response.data ; 
@@ -17,7 +25,7 @@ export const getDatosFaltantesUsuario = async ( idUsuario ) =>{
     }
 }
 
-export const getDatos = async () =>{
+export const getDatos = async () =>{ //Obtiene una lista de datos en la tabla Datos
     try{
         const response = await axios.get( apiUrlDatos + 'datos' ) ;
         const datos = response.data ; 
@@ -29,7 +37,7 @@ export const getDatos = async () =>{
     }
 }
 
-export const newDatoUsuario = async ( datoUsuario ) => {
+export const newDatoUsuario = async ( datoUsuario ) => { //Crea un nuevo dato para el usuario
     try{
         await axios.post( apiUrlDatosUsuario , {
             contenido: datoUsuario.contenido ,

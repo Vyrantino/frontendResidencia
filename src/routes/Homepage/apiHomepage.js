@@ -1,3 +1,7 @@
+/**
+ * En la pagina principal solo quiero mostrar los departamentos mas populares asi como sus plantillas
+ * Enlaces que lleven a todos los lugares necesarios
+ */
 import axios from 'axios' ; 
 require('dotenv').config();
 
@@ -6,7 +10,7 @@ const apiUrlDocumentos = process.env.REACT_APP_API_URL + "documentos/";
 const apiUrlPlantillas = process.env.REACT_APP_API_URL + "plantillas/" ; 
 
 
-export const getDepartamentos = async () =>{
+export const getDepartamentos = async () =>{//Muestra una lista de departamentos
     try{
         const response = await axios.get( apiUrlDepartamentos ) ;
         const departamentos = response.data ; 
@@ -18,7 +22,7 @@ export const getDepartamentos = async () =>{
     }
 }
 
-export const getTopPlantillas = async() =>{
+export const getTopPlantillas = async() =>{ //Muestra las plantillas mas utilizadas
     try{
         const response = await axios.get( apiUrlDocumentos + 'top' ) ;
         const topPlantillas = response.data ; 
@@ -30,7 +34,7 @@ export const getTopPlantillas = async() =>{
     }
 }
 
-export const getPlantillas = async( idDepartamento ) =>{
+export const getPlantillas = async( idDepartamento ) =>{//Muestra la lista de plantillas completa
     try{
         const response = await axios.get( apiUrlPlantillas + idDepartamento ) ;
         const plantillas = response.data ; 

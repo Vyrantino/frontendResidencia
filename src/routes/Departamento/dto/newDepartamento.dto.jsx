@@ -1,5 +1,5 @@
 export default class NewDepartamentoDto{
-    constructor( departamento ) {
+    constructor() {
         this.Nombre ;
     }
 }

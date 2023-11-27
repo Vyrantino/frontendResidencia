@@ -1,3 +1,12 @@
+/**
+ * Editor plantilla va a ser una parte de la aplicacion donde el Administrador y el Moderador
+ * Puedan editar la plantilla que acaban de crear
+ * Va a necesitar cargar la informacion de la plantilla, hacerle modificaciones
+ * Acceder a la lista de Datos disponibles
+ * Debe Acceder a la lista de datos que ya tiene la plantilla
+ * Asi como crear y borrar los datos plantilla tambien 
+ */
+
 import axios from 'axios' ; 
 require('dotenv').config();
 
@@ -5,7 +14,7 @@ const apiPlantilla = process.env.REACT_APP_API_URL + "plantillas/";
 const apiDatos = process.env.REACT_APP_API_URL + "datos/"; 
 const apiDatosPlantilla = process.env.REACT_APP_API_URL + "datos-plantilla/"; 
 
-export const getPlantilla = async ( idPlantilla ) =>{
+export const getPlantilla = async ( idPlantilla ) =>{ //Obtiene la plantilla recien creada
     try{
         const response = await axios.get( apiPlantilla + idPlantilla ) ;
         const plantilla = response.data ; 
@@ -16,7 +25,7 @@ export const getPlantilla = async ( idPlantilla ) =>{
     }
 }
 
-export const updatePlantilla = async ( plantilla ) =>{
+export const updatePlantilla = async ( plantilla ) =>{ // Actualiza a la plantilla con que se esta trabajando
     try{
         const response = await axios.patch( apiPlantilla + plantilla.idPlantilla , {
             Nombre: plantilla.Nombre 
@@ -32,7 +41,7 @@ export const updatePlantilla = async ( plantilla ) =>{
 }
 
 
-export const getDatos = async (  ) =>{
+export const getDatos = async (  ) =>{ //Obtiene la lista de Datos disponibles
     try{
         const response = await axios.get( apiDatos );
         const datos = response.data ; 
@@ -44,7 +53,7 @@ export const getDatos = async (  ) =>{
     }
 }
 
-export const getDatosPlantilla = async ( idPlantilla ) =>{
+export const getDatosPlantilla = async ( idPlantilla ) =>{ // Obtiene la lista de datos que ya estan relacionados a la plantilla
     try{
         const response = await axios.get( apiDatosPlantilla + 'plantilla/' + idPlantilla );
         const datosPlantilla = response.data ; 
@@ -56,7 +65,7 @@ export const getDatosPlantilla = async ( idPlantilla ) =>{
     }
 }
 
-export const newDatoPlantilla = async ( datoPlantilla ) =>{
+export const newDatoPlantilla = async ( datoPlantilla ) =>{ // Crear nuevo DatoPlantilla
     try{
         await axios.post( apiDatosPlantilla , {
             idPlantilla: datoPlantilla.idDatoPlantilla , 
@@ -71,7 +80,7 @@ export const newDatoPlantilla = async ( datoPlantilla ) =>{
     }
 }
 
-export const deleteDatoPlantilla = async ( datoPlantilla ) => {
+export const deleteDatoPlantilla = async ( datoPlantilla ) => { //Borra DatoPlantilla
     try{
         await axios.delete( apiDatosPlantilla + datoPlantilla.idDatoPlantilla ) ;
         const datosPlantilla = await getDatosPlantilla( datoPlantilla.idPlantilla ) ; 
