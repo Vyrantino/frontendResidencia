@@ -7,13 +7,11 @@
  * razon para no poner ahi la opcion
  */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ;
-
-const apiUrlDatosUsuario = process.env.REACT_APP_API_URL + 'datos-usuario' ; 
+const apiUrlDatosUsuario = import.meta.env.VITE_API_URL + 'datos-usuario' ; 
 
 export const getDatosUsuario = async ( idUsuario ) =>{ //Obtiene la lista de los datos del usuario
     try{
-        const response = await axios.get( apiUrlDatosUsuario + idUsuario ) ;
+        const response = await axios.get( apiUrlDatosUsuario + '/idUsuario/' + idUsuario ) ;
         const datosUsuario = response.data ; 
         return datosUsuario ; 
     }
@@ -65,7 +63,7 @@ export const updateDatoUsuario = async ( datoUsuario ) =>{ //Asi como actualizar
 
 export const getEmptyData = async( idUsuario ) => {
     try{
-        const response = await axios.get( apiUrlDatosUsuario + 'datosFaltantes/' + idUsuario ) ;
+        const response = await axios.get( apiUrlDatosUsuario + '/datosFaltantes/' + idUsuario ) ;
         const datosFaltantes = response.data ; 
         return datosFaltantes ; 
     }

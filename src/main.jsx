@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import Root from "./routes/Root/root.jsx";
 import ErrorPage from "./errorPage.jsx";
-import Homepage from './routes/Homepage/homepage';
-import Departamento from './routes/Departamento/departamento';
-import EditorPlantilla from './routes/EditorPlantilla/editor-plantilla';
-import EditorTexto from './routes/EditorTexto/editor-texto';
+import Homepage from './routes/Homepage/homepage.jsx';
+import Departamento from './routes/Departamento/departamento.jsx';
+import EditorPlantilla from './routes/EditorPlantilla/editor-plantilla.jsx';
+import EditorTexto from './routes/EditorTexto/editor-texto.jsx';
 import PaginaDocumentos from './routes/PaginaDocumentos/pagina-documentos.jsx';
 import PanelAdmin from './routes/PanelAdmin/panel-admin.jsx';
 import PanelControl from './routes/PanelControl/panel-control.jsx' ; 
@@ -23,9 +23,14 @@ import PrevisualizarPlantilla from './routes/PrevisualizarPlantilla/previsualiza
 import Register  from './routes/Register/register.jsx';
 import { Provider } from 'react-redux' ; 
 import store from './redux/store.js';
-import { ThemeProvider , createTheme } from '@mui/material';
+import { ThemeProvider , colors, createTheme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import Login from './routes/Login/login.jsx';
+import PanelModerador from './routes/PanelModerador/panel-moderador.jsx';
+import PanelPlantilla from './routes/PanelPlantilla/panel-plantilla.jsx';
+import PanelDatos from './routes/PanelDatos/panel-datos.jsx';
+import PanelUsuarios from './routes/PanelUsuarios/panel-usuarios.jsx';
+import { grey, orange, red } from '@mui/material/colors';
 
 const router = createBrowserRouter([
   {
@@ -34,60 +39,76 @@ const router = createBrowserRouter([
     errorElement: < ErrorPage /> , 
     children: [
       {
-        path: 'homepage' ,
-        Component: < Homepage />
+        path: '/' ,
+        element: <Homepage />
       },
       {
         path: 'departamento' ,
-        Component: < Departamento />
+        element: < Departamento />
       },
       {
         path: 'editor-plantilla' ,
-        Component: < EditorPlantilla />
+        element: < EditorPlantilla />
       },
       {
         path: 'editor-texto' ,
-        Component: < EditorTexto />
+        element: < EditorTexto />
       },
       {
         path: 'formulario-datos' ,
-        Component: < FormularioDatos />
+        element: < FormularioDatos />
       },
       {
         path: 'pagina-documentos' ,
-        Component: < PaginaDocumentos />
+        element: < PaginaDocumentos />
       },
       {
         path: 'panel-admin' ,
-        Component: < PanelAdmin />
+        element: < PanelAdmin />
       },
       {
         path: 'panel-control' ,
-        Component: < PanelControl />
+        element: < PanelControl />
       },
       {
         path: 'panel-departamentos' ,
-        Component: < PanelDepartamentos />
+        element: < PanelDepartamentos />
       },
       {
         path: 'perfil-datos' ,
-        Component: < PerfilDatos />
+        element: < PerfilDatos />
       },
       {
         path: 'selector-plantilla' ,
-        Component: < SelectorPlantilla />
+        element: < SelectorPlantilla />
       },
       {
         path: 'formulario-documento' ,
-        Component: < FormularioDocumento />
+        element: < FormularioDocumento />
       },
       {
         path: 'previsualizar-plantilla' ,
-        Component: < PrevisualizarPlantilla />
+        element: < PrevisualizarPlantilla />
       },
       {
         path: 'login' ,
-        Component: < Login />
+        element: < Login />
+      },
+      {
+        path: 'panel-moderador' ,
+        element: < PanelModerador />
+      },
+      {
+        path: 'panel-plantilla' ,
+        element: < PanelPlantilla />
+      },
+      {
+        path: 'panel-datos' ,
+        element: < PanelDatos />
+      },
+      {
+        path: 'panel-usuarios' ,
+        element: < PanelUsuarios />
       },
     ],
   },
@@ -95,8 +116,26 @@ const router = createBrowserRouter([
 
 const theme = createTheme({
   palette: {
-    mode: 'dark'
+    primary:{
+      main: '#590d0d',
+    },
+    secondary:{
+      main: '#ab5810',
+    },
+    background:{
+      paper: grey[500],
+      default: grey[300]
+    },
+    text:{
+      primary: red[700],
+      secondary: red[600]
+    },
+    
   },
+  status: {
+    danger: orange[500],
+  },
+  
 });
 
 

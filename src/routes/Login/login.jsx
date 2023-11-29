@@ -2,14 +2,16 @@ import { Box, Button, Container, FormControl, FormGroup, TextField } from "@mui/
 import { useDispatch, useSelector } from "react-redux";
 import userSlice, { actionLogin } from "../../redux/usuarios/userSlice";
 import * as React from 'react' ; 
-import { Form, Link } from "react-router-dom";
 import { userLogin } from "./apiLogin";
-import userLoginDto from "./dto/userLogin.dto";
+import UserLoginDto from "./dto/userLogin.dto";
 import Register from "../Register/register";
-import { newUsuario } from "../Register/apiRegister";
+import userLoginDto from "./dto/userLogin.dto";
 
 
 export default function Login(){
+   // const emailRegEx = /\S+@(itDurango\.edu\.mx|durango\.tecnm\.mx)\b/ ;
+    const emailRegEx = /\S+@\S+\.\S+/ ;
+    const [ Registrarse , toogleRegistrarse ] = React.useState( false ) ;
     const [ Email , setEmail ] = React.useState( '' ) ; 
     const [ Username , setUsername ] = React.useState( '' ) ; 
     const [ Password , setPassword ] = React.useState( '' ) ; 
@@ -20,13 +22,15 @@ export default function Login(){
     const handleUsername = ( e ) => setUsername( e.target.value );
     const handlePassword = ( e ) => setPassword( e.target.value );
     const handleLogin = async (  )  => {
-       const user = new userLoginDto({
-            Email: Email ,
-            Username: Username,
-            Password: Password  
-       }); 
-       const loginUser = await newUsuario( user ) ;
+       const isEmail = emailRegEx.test( Email ) ;
+       const user = {
+            Password: Password , 
+            [ isEmail ? 'Email' : 'Username' ] : Email
+       };
+       console.log( user ) ;
+       const loginUser = await userLogin( user , isEmail ) ;
        dispatch( actionLogin( loginUser ) ) ;
+       console.log( ROLE + 'aaa' ) ;
     }
 
     if( Registrarse ){
@@ -56,13 +60,6 @@ export default function Login(){
                  />
                  <TextField
                     sx={{ margin: 3 }}
-                    id="filled-basic-Username"
-                    label="Username"
-                    inputMode="none"
-                    onChange={ handleUsername }
-                 />
-                 <TextField
-                    sx={{ margin: 3 }}
                     id="filled-basic-Password"
                     label="Contraseña"
                     type="password"
@@ -75,7 +72,7 @@ export default function Login(){
                     Ingresar
                  </Button>
                  <Button 
-                   onClick={ () => props.toogleRegistrarse( true ) }
+                   onClick={ () => toogleRegistrarse( true ) }
                  >
                     Registrarse
                  </Button>

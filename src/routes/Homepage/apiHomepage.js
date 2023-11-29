@@ -3,11 +3,10 @@
  * Enlaces que lleven a todos los lugares necesarios
  */
 import axios from 'axios' ; 
-require('dotenv').config();
 
-const apiUrlDepartamentos = process.env.REACT_APP_API_URL + "departamentos/"; 
-const apiUrlDocumentos = process.env.REACT_APP_API_URL + "documentos/"; 
-const apiUrlPlantillas = process.env.REACT_APP_API_URL + "plantillas/" ; 
+const apiUrlDepartamentos = import.meta.env.VITE_API_URL + "departamentos/";
+const apiUrlDocumentos = import.meta.env.VITE_API_URL + "documentos/"; 
+const apiUrlPlantillas = import.meta.env.VITE_API_URL + "plantillas/" ; 
 
 
 export const getDepartamentos = async () =>{//Muestra una lista de departamentos

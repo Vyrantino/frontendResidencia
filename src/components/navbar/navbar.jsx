@@ -8,16 +8,42 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { Link } from 'react-router-dom';
+
+
+
+const links = [
+  {
+    name: "Home",
+    NavLink: "/"
+  },
+  {
+    name: "Perfil",
+    NavLink: "perfil-datos"
+  },
+  {
+    name: "Datos",
+    NavLink: "formulario-datos"
+  },
+  {
+    name: "Documentos",
+    NavLink: "pagina-documentos"
+  },
+] ;
 
 export default function MenuAppBar() {
-  const [auth, setAuth] = React.useState(true);
+  const [theme, setTheme] = React.useState('light');
+  const [checked, setChecked] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleChange = (event) => {
-    setAuth(event.target.checked);
+    setChecked(event.target.checked) ; 
+    if( theme == 'light' )
+      setTheme('dark');
+    else
+      setTheme('light');
   };
 
   const handleMenu = (event) => {
@@ -29,21 +55,9 @@ export default function MenuAppBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? 'Logout' : 'Login'}
-        />
-      </FormGroup>
-      <AppBar position="static">
-        <Toolbar>
+    <Box position={'fixed'} sx={{ flexGrow: 1 , width: '100%'  }}>
+      <AppBar position="static" sx={{  }} >
+        <Toolbar >
           <IconButton
             size="large"
             edge="start"
@@ -53,11 +67,26 @@ export default function MenuAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Photos
-          </Typography>
-          {auth && (
-            <div>
+          {
+            links.map( ( item ) =>(
+              <MenuItem 
+                key={'mi'+item.NavLink + item.name} 
+                component={ Link }
+                to = { item.NavLink }
+                sx={{ flex: 1 }}
+              > 
+                <Typography
+                   flex={1} 
+                   m={1} 
+                   variant='h5' 
+                   key={item.NavLink + item.name}
+                >  
+                  { item.name }
+                </Typography> 
+              </MenuItem>
+             ) ) 
+          }
+            <Box  sx={{ flex: .4 , alignSelf: 'center' }} >
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -86,8 +115,18 @@ export default function MenuAppBar() {
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
               </Menu>
-            </div>
-          )}
+            </Box>
+            <FormControlLabel
+              control={
+                <Switch
+                  color='success'
+                  checked={checked}
+                  onChange={handleChange}
+                  aria-label="login switch"
+                />
+              }
+              label={theme}
+            />
         </Toolbar>
       </AppBar>
     </Box>
