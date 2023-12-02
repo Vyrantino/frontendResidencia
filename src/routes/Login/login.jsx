@@ -27,10 +27,8 @@ export default function Login(){
             Password: Password , 
             [ isEmail ? 'Email' : 'Username' ] : Email
        };
-       console.log( user ) ;
        const loginUser = await userLogin( user , isEmail ) ;
        dispatch( actionLogin( loginUser ) ) ;
-       console.log( ROLE + 'aaa' ) ;
     }
 
     if( Registrarse ){

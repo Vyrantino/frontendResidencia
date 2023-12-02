@@ -6,13 +6,12 @@
  * El CRUD de usuarios y...ya
  */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ; 
 
-const apiUrlUsuarios = process.env.REACT_APP_API_URL + 'usuarios' ;
+const apiUrlUsuarios = import.meta.env.VITE_API_URL + 'usuarios' ;
 
 export const getUsuarios = async () =>{
     try{
-        const response = await axios.get( apiUrlUsuarios ) ;
+        const response = await axios.get( apiUrlUsuarios + '/master' ) ;
         const usuarios = response.data ; 
         return usuarios ; 
     }
@@ -24,7 +23,7 @@ export const getUsuarios = async () =>{
 
 export const deleteUsuario = async( idUsuario ) =>{
     try{
-        await axios.delete( apiUrlUsuarios + idUsuario ) ;
+        await axios.delete( apiUrlUsuarios + '/' + idUsuario ) ;
         alert( "Usuario Eliminado Exitosamente" ) ;
     }
     catch( error ){
@@ -33,15 +32,15 @@ export const deleteUsuario = async( idUsuario ) =>{
     }
 }
 
-export const updateUsuario = async ( usuario ) =>{
+export const updateUsuario = async ( usuario , updatedUsuario ) =>{
     try{
-        await axios.patch( apiUrlUsuarios , {
-            Username: usuario.Username ,
-            Email: usuario.Email , 
+        await axios.patch( apiUrlUsuarios + '/' + usuario.idUsuario , {
+            Username: updatedUsuario.Username ,
+            Email: updatedUsuario.Email , 
             //Role: usuario.Role , //No Creo que sea recomendable usar el tema de los roles aqui
             //Creo que es mejor dejar esa logica a las secciones correspondientes... aunque eso signifique 
             //hacer que el usuario tenga que ir a otras partes para hacer cada cosa
-            Password: usuario.Password 
+            Password: updatedUsuario.Password
         } ) ;
         alert( "Usuario modificado Exitosamente" ) ;
     }

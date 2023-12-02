@@ -11,25 +11,30 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 
 
 const links = [
   {
     name: "Home",
-    NavLink: "/"
+    NavLink: "/",
+    varant:"h5"
   },
   {
     name: "Perfil",
-    NavLink: "perfil-datos"
+    NavLink: "perfil-datos",
+    varant:"h5"
   },
   {
-    name: "Datos",
-    NavLink: "formulario-datos"
+    name: "Ingresa tu informacion",
+    NavLink: "formulario-datos",
+    varant:"h6"
   },
   {
-    name: "Documentos",
-    NavLink: "pagina-documentos"
+    name: "Crear un Documento",
+    NavLink: "formulario-documento",
+    varant:"h6"
   },
 ] ;
 
@@ -50,7 +55,7 @@ export default function MenuAppBar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = ( ) => {
     setAnchorEl(null);
   };
 
@@ -78,7 +83,7 @@ export default function MenuAppBar() {
                 <Typography
                    flex={1} 
                    m={1} 
-                   variant='h5' 
+                   variant={ item.varant } 
                    key={item.NavLink + item.name}
                 >  
                   { item.name }
@@ -112,8 +117,8 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={ handleClose } component = { Link } to = {'pagina-documentos'} >  Mis Documentos </MenuItem>
+                <MenuItem onClick={ handleClose } component = { Link } to = {'departamento'} > Departamentos </MenuItem>
               </Menu>
             </Box>
             <FormControlLabel

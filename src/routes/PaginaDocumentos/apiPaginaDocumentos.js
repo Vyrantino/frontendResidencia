@@ -5,14 +5,13 @@
     Se puede descargar el documento de nuevo
 */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ;
-
-const apiUrlDocumentos = process.env.REACT_APP_API_URL + 'documentos' ; 
+import * as jsFileDownload from 'js-file-download' ;
+const apiUrlDocumentos = import.meta.env.VITE_API_URL + 'documentos' ; 
 
 
 export const getDocumentos = async( idUsuario ) => {//Se obtiene la lista de documentos
     try{
-        const response = await axios.get( apiUrlDocumentos + idUsuario ) ;
+        const response = await axios.get( apiUrlDocumentos + '/idUsuario/' + idUsuario ) ;
         const documentos = response.data ; 
         return documentos ;  
     }
@@ -22,11 +21,16 @@ export const getDocumentos = async( idUsuario ) => {//Se obtiene la lista de doc
     }
 }
 
-export const descargarDocumento = async( idDocumento ) =>{//Se puede descargar un documento
+export const descargarDocumento = async( documento ) =>{//Se puede descargar un documento
     try{
-        const response = await axios.get( apiUrlDocumentos + idDocumento ) ;
-        const documento = response.data ; 
-        return documento ; 
+        console.log( apiUrlDocumentos + '/' + documento.documentos_idDocumento ) ;
+        const response = await axios.get( apiUrlDocumentos + '/' + documento.documentos_idDocumento  , 
+            {
+                responseType: 'blob',
+            }
+        ) ;
+        const file = jsFileDownload( response.data , `${ documento.documentos_Nombre }.docx` ) ; 
+        return file ; 
     }
     catch( error ){
         console.log( 'No se pudo generar el documento ' + error );

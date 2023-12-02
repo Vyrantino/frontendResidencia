@@ -4,9 +4,8 @@
  * poder eliminar, actualizar y crear
  */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ;
 
-const apiUrlDepartamentos = process.env.REACT_APP_API_URL + "departamentos" ; 
+const apiUrlDepartamentos = import.meta.env.VITE_API_URL + "departamentos" ; 
 
 export const getDepartamentos = async() =>{ // Consigue la lista de departamentos
     try{
@@ -22,8 +21,8 @@ export const getDepartamentos = async() =>{ // Consigue la lista de departamento
 
 export const deleteDepartamento = async( idDepartamento ) =>{ //Borra algun departamento
     try{
-        await axios.delete( apiUrlDepartamentos + idDepartamento ) ;
-        alert( "Administrador Eliminado Exitosamente" ) ;
+        await axios.delete( apiUrlDepartamentos + '/' + idDepartamento ) ;
+        alert( "Departamento Eliminado Exitosamente" ) ;
     }
     catch( error ){
         console.error( "No fue posible Eliminar al Departamento " + error );
@@ -33,10 +32,10 @@ export const deleteDepartamento = async( idDepartamento ) =>{ //Borra algun depa
 
 export const updateDepartamento = async( departamento ) =>{ //Actualiza los departamentos 
     try{
-        await axios.patch( apiUrlDepartamentos , {
+        await axios.patch( apiUrlDepartamentos + '/' + departamento.idDepartamento, {
             Nombre: departamento.Nombre , 
         } ) ;
-        alert( "Administrador modificado Exitosamente" ) ;
+        alert( "Departamento modificado Exitosamente" ) ;
     }
     catch( error ){
         console.error( "No fue posible modificar al departamento " + error );
@@ -44,9 +43,9 @@ export const updateDepartamento = async( departamento ) =>{ //Actualiza los depa
     }
 }
 
-export const newDepartamento = async ( departamento ) => {//Crea un nuevo departamento
+export const newDepartamento = async ( newDepartamento ) => {//Crea un nuevo departamento
     await axios.post( apiUrlDepartamentos , {
-        Nombre: departamento.Nombre 
+        Nombre: newDepartamento
     } )
     alert( 'El nuevo departamento ha sido dado de alta' ) ;
 }

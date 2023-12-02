@@ -15,7 +15,6 @@ export const userLogin = async( usuario ) =>{
             Email: usuario.Email
         } );
         const userData = response.data ; 
-        console.log( userData ) ;
         return userData ; 
     }
     catch( error ){

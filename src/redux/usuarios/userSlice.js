@@ -13,7 +13,6 @@ export const usersSlice = createSlice( {
             // state.idUsuario = idUsuario;
             // state.Username = Username;
             // state.Role = Role;
-            console.log( action.payload + "userSlice" ) ;
             state.idUsuario = action.payload.idUsuario ,
             state.Username = action.payload.Username ,
             state.Role = action.payload.Role 

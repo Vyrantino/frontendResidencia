@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDepartamentos, getPlantillas, getTopPlantillas } from "./apiHomepage";
 import DepartamentCard from "../../components/cards/departamentCard";
+import PlantillaCard from "../../components/cards/plantillaCard";
 
 export default function Homepage(){
     const role = useSelector( ( state ) => state.usersSlice.Role );
@@ -12,6 +13,7 @@ export default function Homepage(){
 
     const listaDepartamentos = async () =>{
         const response = await getDepartamentos() ;
+        console.log( response ) ;
         setDepartamentos( response ) ;
     }
     const listaPlantillas = async () =>{
@@ -76,9 +78,9 @@ export default function Homepage(){
                             md= { 5 }
                             xl={ 3 }
                         >
-                            <DepartamentCard 
-                                key={ plantilla.Nombre }
-                                Nombre = { plantilla.Nombre }
+                            <PlantillaCard 
+                                key={ plantilla.plantilla_Nombre }
+                                Nombre = { plantilla.plantilla_Nombre }
                             />   
                         </ Grid>
                     )) 

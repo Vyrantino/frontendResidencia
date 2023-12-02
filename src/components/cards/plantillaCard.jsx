@@ -27,7 +27,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function DepartamentCard( props ) {
+export default function PlantillaCard( props ) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -40,7 +40,7 @@ export default function DepartamentCard( props ) {
       <CardHeader
         avatar={
           <Avatar sx={{  position: 'inherit' , bgcolor: red[500] }} aria-label="recipe">
-            { props.Nombre.substring(0,2) }
+            { props.Nombre.substring(0,1) }
           </Avatar>
         }
         action={

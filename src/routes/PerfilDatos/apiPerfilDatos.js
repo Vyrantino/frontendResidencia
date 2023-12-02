@@ -36,9 +36,9 @@ export const newDatoUsuario = async ( datoUsuario ) =>{//Crea un nuevo dato del 
 }
 
 
-export const deleteDatoUsuario = async( idDatoUsuario ) =>{ //La opcion de borrar dicho dato
+export const deleteDatoUsuario = async( datoUsuario ) =>{ //La opcion de borrar dicho dato
     try{
-        await axios.delete( apiUrlDatosUsuario + idDatoUsuario ) ;
+        await axios.delete( apiUrlDatosUsuario + '/' + datoUsuario.datos_usuario_idDatosUsuario ) ;
         alert( "Dato del usuario Eliminado Exitosamente" ) ;
     }
     catch( error ){
@@ -49,7 +49,7 @@ export const deleteDatoUsuario = async( idDatoUsuario ) =>{ //La opcion de borra
 
 export const updateDatoUsuario = async ( datoUsuario ) =>{ //Asi como actualizar un dato
     try{
-        await axios.patch( apiUrlDatosUsuario , {
+        await axios.patch( apiUrlDatosUsuario + '/' + datoUsuario.idDatosUsuario , {
             contenido: datoUsuario.contenido , 
             idDato: datoUsuario.idDato ,
             idUsuario: datoUsuario.idUsuario

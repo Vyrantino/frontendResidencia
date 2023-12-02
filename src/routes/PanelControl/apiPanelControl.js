@@ -7,11 +7,10 @@
  * Y tambien cargar una lista de administradores segun el departamento
  */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ;
 
-const apiUrlAdministradores = process.env.REACT_APP_API_URL + "administradores" ; 
-const apiUrlUsuarios = process.env.REACT_APP_API_URL + "usuarios" ; 
-const apiUrlDepartamentos = process.env.REACT_APP_API_URL + "departamentos" ; 
+const apiUrlAdministradores = import.meta.env.VITE_API_URL + "administradores" ; 
+const apiUrlUsuarios = import.meta.env.VITE_API_URL + "usuarios" ; 
+const apiUrlDepartamentos = import.meta.env.VITE_API_URL + "departamentos" ; 
 
 export const getAdministradores = async( idDepartamento ) =>{//Lista de administradores por departamento
     try{
@@ -41,7 +40,7 @@ export const newAdministrador = async( administrador ) =>{//Crea nuevo administr
 
 export const getUsuarios = async(  ) =>{//Obtiene la lista de usuarios 
     try{
-        const response = await axios.get( apiUrlUsuarios  ) ;
+        const response = await axios.get( apiUrlUsuarios + '/master' ) ;
         const usuarios = response.data ; 
         return usuarios ; 
     }

@@ -7,15 +7,14 @@
  * 
  */
 import axios from 'axios' ; 
-require('dotenv').config();
 
-const apiUrlDatosUsuario = process.env.REACT_APP_API_URL + "datos-usuarios/"; 
-const apiUrlDatos = process.env.REACT_APP_API_URL + "datos/"; 
+const apiUrlDatosUsuario = import.meta.env.VITE_API_URL + "datos-usuario/"; 
+const apiUrlDatos = import.meta.env.VITE_API_URL + "datos/"; 
 
 
 export const getDatosFaltantesUsuario = async ( idUsuario ) =>{ // Obtiene una lista de datos faltantes
     try{
-        const response = await axios.get( apiUrlDatosUsuario + 'datosFaltantes/' +idUsuario ) ;
+        const response = await axios.get( apiUrlDatosUsuario + 'datosFaltantes/' + idUsuario ) ;
         const datosUsuario = response.data ; 
         return datosUsuario ; 
     }

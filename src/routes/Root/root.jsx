@@ -1,9 +1,8 @@
 import * as React from 'react' ; 
-import MenuAppBar from "../../components/Navbar/navbar";
+import MenuAppBar from "../../components/Navbar/navbar.jsx";
 import { Box, Container, Typography } from "@mui/material";
-import { useDispatch, useSelector  } from "react-redux";
-import Login from "../Login/login";
-import { redirect, Outlet, useNavigate, Navigate } from "react-router-dom";
+import {  useSelector  } from "react-redux";
+import {  Outlet, Navigate } from "react-router-dom";
 import BottomNavigator from '../../components/bottomNavigator/bottomNavigator';
 
 
@@ -33,40 +32,39 @@ export default function Root() {
         );
       case 'Administrador':
         return (
-          <Container>
+          <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
               <MenuAppBar />
-              <Typography > { role } </Typography>
-              <Navigate  to={ 'panel-admin' } />
-              <Container >
-                <Outlet  />
-                <BottomNavigator />
-              </Container>
-              
-          </Container>
+                <Container sx={ { padding: 15 } } >
+                  <Typography > { role } </Typography>
+                  <Navigate to={'panel-admin'}/>
+                  <Outlet  />
+                </Container>
+              <BottomNavigator/>
+          </Box>
         );
       case 'Moderador':
         return (
-          <Container>
+          <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
               <MenuAppBar />
-              <Typography > { role } </Typography>
-              <Navigate  to={ 'panel-moderador' } />
-              <Container >
-                <Outlet  />
-                <BottomNavigator />
-              </Container>
-          </Container>
+                <Container sx={ { padding: 15 } } >
+                  <Typography > { role } </Typography>
+                  <Navigate to={'panel-moderador'}/>
+                  <Outlet  />
+                </Container>
+              <BottomNavigator/>
+          </Box>
         );
       case 'Master':
         return (
-          <>
+          <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
               <MenuAppBar />
-              <Typography > { role } </Typography>
-              <Navigate  to={ 'panel-control' } />
-              <Container >
-                <Outlet  />
-                <BottomNavigator />
-              </Container>
-          </>
+                <Container sx={ { padding: 15 } } >
+                  <Typography > { role } </Typography>
+                  <Navigate to={'panel-control'}/>
+                  <Outlet  />
+                </Container>
+              <BottomNavigator/>
+          </Box>
         );
     }
   }
