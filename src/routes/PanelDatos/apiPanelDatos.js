@@ -7,9 +7,8 @@
  * Basicamente el CRUD de datos aqui
  */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ;
 
-const apiUrlDatos = process.env.REACT_APP_API_URL + "datos" ; 
+const apiUrlDatos = import.meta.env.VITE_API_URL + "datos" ; 
 
 export const getDatos = async() =>{
     try{
@@ -23,10 +22,10 @@ export const getDatos = async() =>{
     }
 }
 
-export const updateDato = async( dato ) =>{
+export const updateDato = async( dato , nombre ) =>{
     try{
-        await axios.patch( apiUrlDatos + dato.idDato , {
-            Nombre: dato.Nombre 
+        await axios.patch( apiUrlDatos + '/' + dato.idDato , {
+            Nombre: nombre 
         } );
         alert( 'El dato fue actualizado satisfactoriamente' ) ;
     }
@@ -51,7 +50,7 @@ export const newDato = async( dato ) =>{
 
 export const deleteDato = async( idDato ) =>{
     try{
-        await axios.delete( apiUrlDatos + idDato );
+        await axios.delete( apiUrlDatos + '/' + idDato );
         alert( 'El dato fue borrado satisfactoriamente' ) ;
     }
     catch( error ){

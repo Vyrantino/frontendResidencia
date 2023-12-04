@@ -23,7 +23,7 @@ export const getDocumentos = async( idUsuario ) => {//Se obtiene la lista de doc
 
 export const descargarDocumento = async( documento ) =>{//Se puede descargar un documento
     try{
-        console.log( apiUrlDocumentos + '/' + documento.documentos_idDocumento ) ;
+       
         const response = await axios.get( apiUrlDocumentos + '/' + documento.documentos_idDocumento  , 
             {
                 responseType: 'blob',

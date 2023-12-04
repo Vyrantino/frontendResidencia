@@ -28,7 +28,6 @@ export default function DialogDepartamentos( props ){
                             <Button  sx={{ width: '100%' }} onClick={ props.closeDialog } variant='contained' color='error' > Cancelar </Button> 
                         </Grid>
                     </Grid>
-    
                 </DialogContent>   
             </Dialog>
         </>

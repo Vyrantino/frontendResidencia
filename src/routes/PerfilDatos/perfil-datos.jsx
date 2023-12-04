@@ -17,10 +17,9 @@ import {
     TextField, 
     Typography,   
  } from '@mui/material';
- import PublishIcon from '@mui/icons-material/Publish';
  import DeleteIcon from '@mui/icons-material/Delete';
  import EditIcon from '@mui/icons-material/Edit';
-import DialogDatos from '../../components/dialogs/dialogDatos';
+import DialogDatosUsuario from '../../components/dialogs/dialogDatosUsuario';
 
 export default function PerfilDatos(){
     const usuario = useSelector( ( state ) => state.usersSlice.idUsuario ) ;
@@ -197,7 +196,7 @@ export default function PerfilDatos(){
                     </Button>                        
                 </ButtonGroup>  
             </Box>
-                <DialogDatos 
+                <DialogDatosUsuario 
                     open = { showDialog }
                     idDato = { datoUsuarioSeleccionado.datos_idDato }
                     nombreDato = { datoUsuarioSeleccionado.datos_Nombre }

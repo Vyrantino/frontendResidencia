@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import * as React from 'react' ;
 
-export default function DialogDatos( props ){
+export default function DialogDatosUsuario( props ){
     const handleInput = ( e ) => props.setDialogInput( e.target.value ) ;
     const submitInfo = async () =>{
         await props.updateDato() ; 
@@ -11,8 +11,8 @@ export default function DialogDatos( props ){
         <>
             <Dialog open= { props.open } onClose={ props.closeDialog } >
                 <DialogTitle textAlign={'center'} >
-                    <Typography variant='h5' > Esta seguro de cambiar el siguiente dato? </Typography>
-                    <Typography> { props.dato.Nombre }  </Typography>
+                    <Typography variant='h5' > Esta seguro de cambiar el siguiente dato?   </Typography>
+                    <Typography> { props.nombreDato }  </Typography>
                 </DialogTitle>
                 <DialogContent>
                     <Grid container spacing={2} justifyContent={'center'} >
@@ -21,6 +21,7 @@ export default function DialogDatos( props ){
                                 sx={{ width: '100%' , marginTop: 1 }} 
                                 onChange={ handleInput } 
                                 label={'Contenido'}
+                                
                             > 
                                 Introduzca su dato 
                             </TextField> 

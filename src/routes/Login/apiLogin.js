@@ -2,6 +2,7 @@
 import axios  from "axios" ;
 
 const apiUrlLogin = import.meta.env.VITE_API_URL + "usuarios" ;
+const apiUrlLoginDepartamentos = import.meta.env.VITE_API_URL + 'administradores' ; 
 
 export const userLogin = async( usuario ) =>{
     try{

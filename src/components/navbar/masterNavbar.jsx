@@ -5,50 +5,48 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionLogOut } from '../../redux/usuarios/userSlice';
 
 
 
 
-
-export default function MenuAppBar() {
+export default function MasterNavbar() {
   const [theme, setTheme] = React.useState('light');
   const [checked, setChecked] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const dispatch = useDispatch() ;
   const usuario = useSelector( ( state ) => state.usersSlice.Role ) ;
+  const dispatch = useDispatch() ;
+  const navigate = useNavigate() ;
 
   const links = [
     {
-      name: usuario,
-      NavLink: "/",
+      name:  usuario ,
+      NavLink: "/panel-control",
       varant:"h5"
     },
     {
-      name: "Perfil",
-      NavLink: "perfil-datos",
+      name: "Panel de Usuarios",
+      NavLink: "panel-usuarios",
       varant:"h5"
     },
     {
-      name: "Ingresa tu informacion",
-      NavLink: "formulario-datos",
+      name: "Crear tipos de Dato",
+      NavLink: "panel-datos",
       varant:"h6"
     },
     {
-      name: "Crear un Documento",
-      NavLink: "formulario-documento",
+      name: "Crear Departamentos",
+      NavLink: "panel-departamentos",
       varant:"h6"
     },
   ] ;
-
+  
   const handleChange = (event) => {
     setChecked(event.target.checked) ; 
     if( theme == 'light' )
@@ -57,21 +55,21 @@ export default function MenuAppBar() {
       setTheme('light');
   };
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleLogOut = () =>{
+      try {
+        dispatch( actionLogOut() );
+        navigate('/');
+      } catch (error) {
+        console.error( error ) ;
+      }
+  }
 
   const handleClose = ( ) => {
     setAnchorEl(null);
   };
 
-  const handleLogOut = ( ) => {
-    dispatch( actionLogOut() ) ;
-    setAnchorEl(null);
-  };
-
   return (
-    <Box position={'fixed'} sx={{ flexGrow: 1 , width: '100%' , zIndex: 100000 }}>
+    <Box position={'fixed'} sx={{ flexGrow: 1 , width: '100%' , zIndex: 1000000  }}>
       <AppBar position="static" sx={{  }} >
         <Toolbar >
           <IconButton
@@ -80,8 +78,9 @@ export default function MenuAppBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={ handleLogOut }
           >
-            <MenuIcon />
+            <ExitToAppIcon  />
           </IconButton>
           {
             links.map( ( item ) =>(
@@ -102,38 +101,6 @@ export default function MenuAppBar() {
               </MenuItem>
              ) ) 
           }
-            <Box  sx={{ flex: .4 , alignSelf: 'center' }} >
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                sx={{ zIndex: 100001 }}
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={ handleClose } component = { Link } to = {'pagina-documentos'} >  Mis Documentos </MenuItem>
-                <MenuItem onClick={ handleClose } component = { Link } to = {'departamento'} > Departamentos </MenuItem>
-                <MenuItem onClick={ handleLogOut } component = { Link } to = {'/'} > Desconectarse </MenuItem>
-              </Menu>
-            </Box>
             <FormControlLabel
               control={
                 <Switch

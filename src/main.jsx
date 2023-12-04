@@ -123,7 +123,7 @@ const theme = createTheme({
       main: '#ab5810',
     },
     background:{
-      paper: grey[500],
+      paper: grey[300],
       default: grey[300]
     },
     text:{

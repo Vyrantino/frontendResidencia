@@ -15,7 +15,6 @@ export default function Login(){
     const [ Email , setEmail ] = React.useState( '' ) ; 
     const [ Username , setUsername ] = React.useState( '' ) ; 
     const [ Password , setPassword ] = React.useState( '' ) ; 
-    const ROLE = useSelector( ( state ) => state.usersSlice.Role );
     const dispatch = useDispatch() ;
 
     const handleEmail = ( e ) => setEmail( e.target.value );
@@ -29,6 +28,18 @@ export default function Login(){
        };
        const loginUser = await userLogin( user , isEmail ) ;
        dispatch( actionLogin( loginUser ) ) ;
+       switch( loginUser.Role ){
+            case 'Usuario' : break ;
+            case 'Administrador' : break ; 
+            case 'Moderador' : break ;
+            case 'Master' : break ; 
+            default : break ; 
+       }
+    }
+    const keyPress = ( e ) =>{
+        if( e.keyCode == 13 ){
+            handleLogin() ;
+        }
     }
 
     if( Registrarse ){
@@ -62,8 +73,8 @@ export default function Login(){
                     label="Contraseña"
                     type="password"
                     onChange={ handlePassword }
+                    onKeyDown={ keyPress }
                  />
-    
                  <Button 
                     onClick={ handleLogin }
                  >

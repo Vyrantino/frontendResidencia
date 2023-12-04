@@ -9,12 +9,14 @@
  * Una lista de datos que le faltan al usuario
  */
 import axios from 'axios' ; 
-require('dotenv').config();
+import * as jsFileDownload from 'js-file-download' ;
 
-const apiUrlDepartamentos = process.env.REACT_APP_API_URL + "departamentos/"; 
-const apiUrlPlantillas = process.env.REACT_APP_API_URL + "plantillas/";  
-const apiUrlDocumentos = process.env.REACT_APP_API_URL + "documentos" ; 
-const apiUrlDatosPlantilla = process.env.REACT_APP_API_URL + "datos-plantilla";
+const apiUrlDepartamentos =  import.meta.env.VITE_API_URL + "departamentos/"; 
+const apiUrlPlantillas =  import.meta.env.VITE_API_URL + "plantillas/";  
+const apiUrlDocumentos =  import.meta.env.VITE_API_URL + "documentos/" ; 
+const apiUrlDatosPlantilla = import.meta.env.VITE_API_URL + "datos-plantilla/";
+const apiUrlDatosUsuario = import.meta.env.VITE_API_URL + "datos-usuario/";
+
 export const getDepartamentos = async() =>{//Carga la lista de departamentos
     try{
         const response = await axios.get( apiUrlDepartamentos ) ;
@@ -42,7 +44,7 @@ export const getPlantillas = async ( idDepartamento ) =>{//Carga la lista de pla
 export const getNeededData = async( idPlantilla , idUsuario ) =>{//carga una lista de datos que faltan del usuario para completar los
     //necesarios para la plantilla
     try{
-        const response = await axios.get( apiUrlDatosPlantilla + idPlantilla + "/usuario/" + idUsuario ) ;
+        const response = await axios.get( apiUrlDatosPlantilla + 'plantilla/' + idPlantilla + "/usuario/" + idUsuario ) ;
         const datosFaltantes = response.data ; 
         return datosFaltantes ; 
     }
@@ -66,14 +68,34 @@ export const getNeededData = async( idPlantilla , idUsuario ) =>{//carga una lis
 
 export const newDocumento = async ( documento ) =>{//Crea un nuevo documento
     try{
-        await axios.post( apiUrlDocumentos , {
-            Nombre: documento.Nombre , 
-            idPlantilla: documento.idPlantilla ,
-            idUsuario: documento.idUsuario
-        } ) ;
-        alert( 'Documento generado correctamente' ) ;
+        const file = await axios.post( apiUrlDocumentos , {
+                Nombre: documento.Nombre , 
+                idPlantilla: documento.idPlantilla ,
+                idUsuario: documento.idUsuario
+        },  
+        { responseType: 'blob' }    
+        ) ;
+        const download = jsFileDownload( file.data , `${ documento.Nombre }.docx` ) ; 
+        return download ; 
     }
     catch( error ){
         console.error( 'No fue posible generar el documento ' + error ) ;
     }
 }
+
+export const newDatoUsuario = async ( datoUsuario ) =>{//Crea un nuevo dato del usuario
+    try{
+        console.log( datoUsuario ) ;
+        await axios.post( apiUrlDatosUsuario , {
+            contenido: datoUsuario.contenido , 
+            idDato: datoUsuario.idDato ,
+            idUsuario: datoUsuario.idUsuario
+        } ) ;
+        alert( 'Dato del usuario agregado correctamente' ) ;
+    }
+    catch( error ){
+        console.error( 'No fue posible agregar el dato del usuario ' + error ) ;
+    }
+}
+
+

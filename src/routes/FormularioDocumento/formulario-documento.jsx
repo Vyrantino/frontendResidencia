@@ -1,7 +1,179 @@
+import { Button, Container, Grid, IconButton, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material' ;
+import * as React from 'react' ; 
+import { getDepartamentos, getNeededData, getPlantillas, newDocumento } from './apiFormularioDocumento';
+import DepartamentCard from '../../components/cards/departamentCard';
+import { useSelector } from 'react-redux';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import DialogFormularioDocumento from './dialogFormularioDocumento';
 export default function FormularioDocumento(){
+    const usuario = useSelector( ( state ) => state.usersSlice.idUsuario ) ;
+    const [ departamentos , setDepartamentos ] = React.useState([]) ;
+    const [ selectedDepartamento , setSelectedDepartamento ] = React.useState([]) ;
+    const [ plantillas , setPlantillas ] = React.useState([]) ;
+    const [ selectedPlantilla , setSelectedPlantilla ] = React.useState([]) ;
+    const [ datosFaltantes , setDatosFaltantes ] = React.useState([]) ;
+    const [ selectedDatoFaltante , setSelectedDatoFaltante ] = React.useState([]) ;
+    const [ showDialog , setShowDialog ] = React.useState(false) ;
+
+    const handleSelectDepartamento =  ( departamento ) => setSelectedDepartamento( departamento ) ;
+    const handleSelectPlantilla =  ( plantilla ) => setSelectedPlantilla( plantilla ) ;
+    const handleSelectDatoFaltante = ( datoFaltante ) => {
+        try {
+            setSelectedDatoFaltante( datoFaltante ) ;
+            setShowDialog( true );
+        } catch (error) {
+            console.error( error ) ;
+        }
+    }
+    const handleDownload = async () =>{
+        try {
+            const documento = {
+                idPlantilla: selectedPlantilla.idPlantilla , 
+                Nombre: selectedDatoFaltante.plantilla_Nombre, 
+                idUsuario: usuario 
+            }
+            await newDocumento( documento ) ;
+        } catch (error) {
+            console.error( error ) ;
+        }
+    }
+    const closeDialog = () => setShowDialog( false ) ;
+
+    const listaDatosFaltantes = async () =>{
+        try {
+            const response = await getNeededData( selectedPlantilla.idPlantilla , usuario ) ;
+            setDatosFaltantes( response ) ;
+        } catch (error) {
+            
+        }
+    }
+
+    const listaDepartamentos = async () =>{
+        try {
+            const response = await getDepartamentos() ;
+            setDepartamentos( response ) ;
+        } catch (error) {
+            console.error( error ) ;
+        }
+    }
+
+    const listaPlantillas = async () =>{
+        try {
+            const response = await getPlantillas( selectedDepartamento.idDepartamento ) ;
+            setPlantillas( response ) ;
+        } catch (error) {
+            console.error( error ) ;
+        }
+    }
+    React.useEffect( () => {
+        listaDepartamentos() ;
+    },[  ] ) ;
+    React.useEffect( () => {
+        listaPlantillas() ;
+    },[ selectedDepartamento ] ) ;
+    React.useEffect( () => {
+        listaDatosFaltantes() ;
+    },[ selectedPlantilla ] ) ;
+    React.useEffect( () => {
+        listaDatosFaltantes() ;
+    },[ selectedPlantilla ] ) ;
+
     return (
-        <>
-            <h1>Formulario Documento</h1>
-        </>
+        <Container>
+            <Typography variant='h2' > Lista de Departamentos </Typography>
+            <Grid container >
+            {
+                departamentos.map( ( departamento ) => (
+                    <Grid 
+                        key={'departamento' + departamento.idDepartamento}
+                        component={Paper} 
+                        item xs={5} md={ 4 } 
+                        xl = { 3 } 
+                        width={10}
+                    > 
+                        <Button
+                            hidden
+                            onClick={() => handleSelectDepartamento( departamento ) }
+                        >
+                            <DepartamentCard 
+                                Nombre = { departamento.Nombre }
+                            />
+                        </Button>
+                    </ Grid>
+                ) )
+            }
+            </Grid>
+            <Typography variant='h2' > Lista de Plantillas </Typography>
+            {
+                plantillas &&
+                <Grid container >
+                {
+                    plantillas.map( ( plantilla ) => (
+                        <Grid 
+                            key={ 'plantilla' + plantilla.idPlantilla}
+                            component={Paper} 
+                            item xs={5} md={ 4 } 
+                            xl = { 3 } 
+                            width={10}
+                        > 
+                            <Button
+                                hidden
+                                onClick={ () => handleSelectPlantilla( plantilla ) }
+                            >
+                                <DepartamentCard 
+                                    Nombre = { plantilla.Nombre }
+                                />
+                            </Button>
+                        </ Grid>
+                    ) )
+                }
+                </Grid>
+            }
+            <Typography variant='h2' > Lista de Datos Faltantes </Typography>
+            {
+                datosFaltantes && datosFaltantes.length > 0 ?
+                <TableContainer>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell> <Typography variant='h5' > Nombre del Dato  </Typography> </TableCell>
+                            <TableCell> <Typography variant='h5' > Ingresar el Dato  </Typography> </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            datosFaltantes.map( ( datoFaltante ) => (
+                                <TableRow>
+                                    <TableCell> <Typography variant='h6' > { datoFaltante.Datos_Nombre } </Typography> </TableCell>
+                                    <TableCell> 
+                                        <IconButton 
+                                            onClick={ () => handleSelectDatoFaltante( datoFaltante ) } 
+                                        >  
+                                            <ArrowUpwardIcon /> 
+                                        </IconButton> 
+                                    </TableCell>
+                                </TableRow>
+                            ) )
+                        }
+                    </TableBody>
+                </TableContainer>
+                :
+                <Button 
+                    variant='contained' 
+                    color='warning' 
+                    onClick={ handleDownload }
+                > 
+                    Descarga Lista 
+                </Button>
+                
+            }
+            <DialogFormularioDocumento 
+                showDialog = { showDialog }
+                idDato = { selectedDatoFaltante.DatosPlantilla_idDato }
+                usuario = { usuario }
+                listaDatosFaltante = { listaDatosFaltantes }
+                closeDialog = { closeDialog }
+                NombreDato = { selectedDatoFaltante.Datos_Nombre }
+            />
+        </Container>
     );
 }

@@ -2,11 +2,13 @@ import * as React from 'react' ;
 import MenuAppBar from "../../components/Navbar/navbar.jsx";
 import { Box, Container, Typography } from "@mui/material";
 import {  useSelector  } from "react-redux";
-import {  Outlet, Navigate } from "react-router-dom";
+import {  Outlet, Navigate, useNavigate } from "react-router-dom";
 import BottomNavigator from '../../components/bottomNavigator/bottomNavigator';
+import MasterNavbar from '../../components/navbar/masterNavbar.jsx';
 
 
 export default function Root() {
+  const navigate = useNavigate() ;
   const role = useSelector( ( state ) => state.usersSlice.Role );
   if( !role ){
     return(
@@ -23,7 +25,6 @@ export default function Root() {
           <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
               <MenuAppBar />
                 <Container sx={ { padding: 15 } } >
-                  <Typography > { role } </Typography>
                   <Navigate to={'/'}/>
                   <Outlet  />
                 </Container>
@@ -35,7 +36,6 @@ export default function Root() {
           <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
               <MenuAppBar />
                 <Container sx={ { padding: 15 } } >
-                  <Typography > { role } </Typography>
                   <Navigate to={'panel-admin'}/>
                   <Outlet  />
                 </Container>
@@ -47,7 +47,6 @@ export default function Root() {
           <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
               <MenuAppBar />
                 <Container sx={ { padding: 15 } } >
-                  <Typography > { role } </Typography>
                   <Navigate to={'panel-moderador'}/>
                   <Outlet  />
                 </Container>
@@ -57,9 +56,8 @@ export default function Root() {
       case 'Master':
         return (
           <Box sx={{ position: 'relative', paddingBottom: '50px' }}>
-              <MenuAppBar />
+              <MasterNavbar />
                 <Container sx={ { padding: 15 } } >
-                  <Typography > { role } </Typography>
                   <Navigate to={'panel-control'}/>
                   <Outlet  />
                 </Container>

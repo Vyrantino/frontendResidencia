@@ -9,12 +9,11 @@
  * por lo que sera necesario cargar previamente el departamento disponible del administrador
  */
 import axios from 'axios' ; 
-require( 'dotenv' ).config() ;
 
-const apiUrlAdministradores = process.env.REACT_APP_API_URL + "administradores"; 
-const apiUrlModeradores = process.env.REACT_APP_API_URL + "moderadores"; 
-const apiUrlPlantillas = process.env.REACT_APP_API_URL + "plantillas"; 
-const apiUrlUsuarios = process.env.REACT_APP_API_URL + "usuarios"; 
+const apiUrlAdministradores = import.meta.env.VITE_API_URL + "administradores/"; 
+const apiUrlModeradores = import.meta.env.VITE_API_URL + "moderadores/"; 
+const apiUrlPlantillas = import.meta.env.VITE_API_URL + "plantillas/"; 
+const apiUrlUsuarios = import.meta.env.VITE_API_URL + "usuarios/"; 
 
 export const getModeradores = async ( idDepartamento ) =>{ //Lista de moderadores segun el departamento
     try{
@@ -45,6 +44,7 @@ export const newModerador = async ( moderador ) =>{ //Se crea a un nuevo moderad
 export const getAdminDepartamentos = async( idUsuario ) =>{ 
     // se obtiene una lista de los departamentos que le corresponden a determinado admin
     try{
+        console.log( apiUrlAdministradores + 'departamentos/' + idUsuario  ) ;
         const response = await axios.get( apiUrlAdministradores + 'departamentos/' + idUsuario  ) ;
         const departamentos = response.data ; 
         return departamentos ; 
