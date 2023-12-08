@@ -49,4 +49,15 @@ export const updateDocumento = async( documento ) =>{
         return null ; 
     }
 }
+
+export const deleteDocumento = async( idDocumento ) =>{
+    try {
+        const confirmDelete = confirm( 'Desea Eliminar el documento de la lista?' ) ;
+        if( confirmDelete )
+            await axios.delete( apiUrlDocumentos + '/' + idDocumento ) ;
+    } catch (error) {
+        console.log( 'No se pudo borrar el documento ' + error );
+        return null ; 
+    }
+}
   

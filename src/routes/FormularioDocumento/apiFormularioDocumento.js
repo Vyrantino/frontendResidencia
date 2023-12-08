@@ -41,6 +41,7 @@ export const getPlantillas = async ( idDepartamento ) =>{//Carga la lista de pla
     }
 }
 
+
 export const getNeededData = async( idPlantilla , idUsuario ) =>{//carga una lista de datos que faltan del usuario para completar los
     //necesarios para la plantilla
     try{
@@ -73,7 +74,7 @@ export const newDocumento = async ( documento ) =>{//Crea un nuevo documento
                 idPlantilla: documento.idPlantilla ,
                 idUsuario: documento.idUsuario
         },  
-        { responseType: 'blob' }    
+        { responseType: 'blob' , }    
         ) ;
         const download = jsFileDownload( file.data , `${ documento.Nombre }.docx` ) ; 
         return download ; 
@@ -95,6 +96,27 @@ export const newDatoUsuario = async ( datoUsuario ) =>{//Crea un nuevo dato del 
     }
     catch( error ){
         console.error( 'No fue posible agregar el dato del usuario ' + error ) ;
+    }
+}
+
+export const getDepartamento = async ( idDepartamento ) =>{
+    try {
+        const response = await axios.get( apiUrlDepartamentos + idDepartamento ) ;
+        const departamento = response.data ; 
+        return departamento ; 
+    } catch (error) {
+        console.error( error ) ;
+    }
+}
+
+export const getPlantilla = async ( idPlantilla ) =>{
+    try {
+        const response = await axios.get( apiUrlPlantillas + idPlantilla ) ;
+        const plantilla = response.data ; 
+        console.log( response.data ) ;
+        return plantilla ; 
+    } catch (error) {
+        console.error( error ) ;
     }
 }
 

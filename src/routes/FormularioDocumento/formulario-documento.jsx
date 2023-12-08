@@ -1,12 +1,15 @@
 import { Button, Container, Grid, IconButton, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material' ;
 import * as React from 'react' ; 
-import { getDepartamentos, getNeededData, getPlantillas, newDocumento } from './apiFormularioDocumento';
+import { getDepartamento, getDepartamentos, getNeededData, getPlantillas, newDocumento } from './apiFormularioDocumento';
 import DepartamentCard from '../../components/cards/departamentCard';
 import { useSelector } from 'react-redux';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import DialogFormularioDocumento from './dialogFormularioDocumento';
+import FormularioDocumentoDepartamentCard from './formularioDocumentoDepartamentCard';
 export default function FormularioDocumento(){
-    const usuario = useSelector( ( state ) => state.usersSlice.idUsuario ) ;
+    const loadedPlantilla = useSelector( ( state ) => state.plantillasSlice.plantilla ) ;
+    const loadedDepartamento = useSelector( ( state ) => state.departamentosSlice.departamento ) ;
+    const idUsuario = useSelector( ( state ) => state.usersSlice.idUsuario ) ;
     const [ departamentos , setDepartamentos ] = React.useState([]) ;
     const [ selectedDepartamento , setSelectedDepartamento ] = React.useState([]) ;
     const [ plantillas , setPlantillas ] = React.useState([]) ;
@@ -14,9 +17,19 @@ export default function FormularioDocumento(){
     const [ datosFaltantes , setDatosFaltantes ] = React.useState([]) ;
     const [ selectedDatoFaltante , setSelectedDatoFaltante ] = React.useState([]) ;
     const [ showDialog , setShowDialog ] = React.useState(false) ;
+    const [ showDownloadButton , setShowDownloadButton ] = React.useState(false) ;
 
-    const handleSelectDepartamento =  ( departamento ) => setSelectedDepartamento( departamento ) ;
-    const handleSelectPlantilla =  ( plantilla ) => setSelectedPlantilla( plantilla ) ;
+    const handleSelectDepartamento =  ( departamento ) => {
+        setSelectedDepartamento( departamento ) ;
+        setSelectedPlantilla([]) ;
+        setSelectedDatoFaltante([]) ;
+        setDatosFaltantes([]) ;
+        setShowDownloadButton( false ) ;
+    }
+    const handleSelectPlantilla =  ( plantilla ) => {
+        setSelectedPlantilla( plantilla ) ;
+        console.log( plantilla ) ;
+    }
     const handleSelectDatoFaltante = ( datoFaltante ) => {
         try {
             setSelectedDatoFaltante( datoFaltante ) ;
@@ -29,10 +42,11 @@ export default function FormularioDocumento(){
         try {
             const documento = {
                 idPlantilla: selectedPlantilla.idPlantilla , 
-                Nombre: selectedDatoFaltante.plantilla_Nombre, 
-                idUsuario: usuario 
+                Nombre: selectedPlantilla.Nombre, 
+                idUsuario: idUsuario 
             }
-            await newDocumento( documento ) ;
+            const response = await newDocumento( documento ) ;
+            setShowDownloadButton( false ) ;
         } catch (error) {
             console.error( error ) ;
         }
@@ -41,16 +55,27 @@ export default function FormularioDocumento(){
 
     const listaDatosFaltantes = async () =>{
         try {
-            const response = await getNeededData( selectedPlantilla.idPlantilla , usuario ) ;
+            const response = await getNeededData( selectedPlantilla.idPlantilla , idUsuario ) ;
             setDatosFaltantes( response ) ;
+            if( response.length == 0 )
+                setShowDownloadButton( true ) ;
         } catch (error) {
-            
+            console.error( error ) ;
         }
     }
 
     const listaDepartamentos = async () =>{
         try {
             const response = await getDepartamentos() ;
+            setDepartamentos( response ) ;
+        } catch (error) {
+            console.error( error ) ;
+        }
+    }
+
+    const loadDepartamento = async() =>{
+        try {
+            const response = await getDepartamento( loadedDepartamento.idDepartamento ) ;
             setDepartamentos( response ) ;
         } catch (error) {
             console.error( error ) ;
@@ -65,44 +90,72 @@ export default function FormularioDocumento(){
             console.error( error ) ;
         }
     }
+
+    const loadPlantilla = async() =>{
+        try {
+            const response = await getNeededData( loadedPlantilla.idPlantilla , idUsuario ) ;
+            setDatosFaltantes( response ) ;
+        } catch (error) {
+            console.error( error ) ;
+        }
+    }
+
+    
     React.useEffect( () => {
-        listaDepartamentos() ;
-    },[  ] ) ;
-    React.useEffect( () => {
-        listaPlantillas() ;
-    },[ selectedDepartamento ] ) ;
-    React.useEffect( () => {
-        listaDatosFaltantes() ;
-    },[ selectedPlantilla ] ) ;
-    React.useEffect( () => {
-        listaDatosFaltantes() ;
-    },[ selectedPlantilla ] ) ;
+        if( loadedDepartamento != 0 ){
+            loadDepartamento() ;
+            setSelectedDepartamento( loadedDepartamento ) ;
+        }
+        else{
+            listaDepartamentos() ;
+        }
+        if( selectedDepartamento.length != 0 )
+            listaPlantillas() ;
+        // if( loadedPlantilla != 0 ){
+        //     loadPlantilla() ;
+        //     setSelectedPlantilla( loadedPlantilla ) ;
+        // }
+        if( selectedPlantilla.length != 0 )
+            listaDatosFaltantes() ;
+    },[ selectedDepartamento , selectedPlantilla , showDownloadButton ] ) ;
 
     return (
         <Container>
-            <Typography variant='h2' > Lista de Departamentos </Typography>
-            <Grid container >
             {
-                departamentos.map( ( departamento ) => (
-                    <Grid 
-                        key={'departamento' + departamento.idDepartamento}
-                        component={Paper} 
-                        item xs={5} md={ 4 } 
-                        xl = { 3 } 
-                        width={10}
-                    > 
-                        <Button
-                            hidden
-                            onClick={() => handleSelectDepartamento( departamento ) }
-                        >
-                            <DepartamentCard 
-                                Nombre = { departamento.Nombre }
-                            />
-                        </Button>
-                    </ Grid>
-                ) )
+                loadedDepartamento.length != 0 ? 
+                <Button
+                    hidden
+                    onClick={() => handleSelectDepartamento( loadedDepartamento ) }
+                >
+                        <FormularioDocumentoDepartamentCard 
+                            Nombre = { loadedDepartamento.Nombre }
+                        />
+                </Button>
+                :
+                <Grid container >
+                    <Typography variant='h2' > Lista de Departamentos </Typography>
+                {
+                    departamentos.map( ( departamento ) => (
+                        <Grid 
+                            key={'departamento' + departamento.idDepartamento}
+                            component={Paper} 
+                            item xs={5} md={ 4 } 
+                            xl = { 3 } 
+                            width={10}
+                        > 
+                            <Button
+                                hidden
+                                onClick={() => handleSelectDepartamento( departamento ) }
+                            >
+                                <FormularioDocumentoDepartamentCard 
+                                    Nombre = { departamento.Nombre }
+                                />
+                            </Button>
+                        </ Grid>
+                    ) )
+                }
+                </Grid>
             }
-            </Grid>
             <Typography variant='h2' > Lista de Plantillas </Typography>
             {
                 plantillas &&
@@ -120,7 +173,7 @@ export default function FormularioDocumento(){
                                 hidden
                                 onClick={ () => handleSelectPlantilla( plantilla ) }
                             >
-                                <DepartamentCard 
+                                <FormularioDocumentoDepartamentCard 
                                     Nombre = { plantilla.Nombre }
                                 />
                             </Button>
@@ -157,6 +210,7 @@ export default function FormularioDocumento(){
                     </TableBody>
                 </TableContainer>
                 :
+                showDownloadButton &&
                 <Button 
                     variant='contained' 
                     color='warning' 
@@ -169,7 +223,7 @@ export default function FormularioDocumento(){
             <DialogFormularioDocumento 
                 showDialog = { showDialog }
                 idDato = { selectedDatoFaltante.DatosPlantilla_idDato }
-                usuario = { usuario }
+                usuario = { idUsuario }
                 listaDatosFaltante = { listaDatosFaltantes }
                 closeDialog = { closeDialog }
                 NombreDato = { selectedDatoFaltante.Datos_Nombre }

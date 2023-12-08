@@ -3,9 +3,8 @@
  * Solo servira para seleccionar una plantilla, nada mas
  */
 import axios from 'axios' ; 
-require('dotenv').config();
 
-const apiUrlDepartamentos = process.env.REACT_APP_API_URL + "departamentos/"; 
+const apiUrlDepartamentos = import.meta.env.VITE_API_URL + "departamentos/"; 
 
 export const getDepartamentos = async (  ) =>{ //Obtiene la lista de departamentos
    try{

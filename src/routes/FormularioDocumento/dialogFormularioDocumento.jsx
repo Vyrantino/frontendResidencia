@@ -15,6 +15,7 @@ export default function DialogFormularioDocumento( props ) {
             }
             await newDatoUsuario( datoUsuario ) ;
             props.listaDatosFaltante() ;
+            props.closeDialog() ;
         } catch (error) {
             console.error( error ) ;
         }

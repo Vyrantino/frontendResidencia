@@ -1,27 +1,30 @@
-import { Box, Container, Grid, Typography, colors } from "@mui/material";
+import { Box, Button, Container, Grid, Typography, colors } from "@mui/material";
 import * as React from 'react' ;
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getDepartamentos, getPlantillas, getTopPlantillas } from "./apiHomepage";
 import DepartamentCard from "../../components/cards/departamentCard";
 import PlantillaCard from "../../components/cards/plantillaCard";
+import { loadDepartamento } from "../../redux/departamentos/departamentosSlice";
+import HomepagePlantillaCard from "./homepagePlantillaCard";
+import { loadPlantilla } from "../../redux/plantillas/plantillasSlice";
 
 export default function Homepage(){
+    const dispatch = useDispatch() ;
     const role = useSelector( ( state ) => state.usersSlice.Role );
     const [ departamentos , setDepartamentos ] = React.useState([]) ;
     const [ plantillas , setPlantillas ] = React.useState([]) ;
 
     const listaDepartamentos = async () =>{
         const response = await getDepartamentos() ;
-        console.log( response ) ;
         setDepartamentos( response ) ;
     }
     const listaPlantillas = async () =>{
         const response = await getTopPlantillas() ;
-        console.log( response ) ;
         setPlantillas( response ) ;
     }
     React.useEffect( ()=>{
+        dispatch( loadDepartamento([]) ) ;
         listaDepartamentos() ;
         listaPlantillas() ;
     },[] );
@@ -46,14 +49,14 @@ export default function Homepage(){
                     departamentos.map( ( departamento ) =>(
                         <Grid 
                             item 
-                            key={'gridItem'+ departamento.Nombre} 
+                            key={'gridItemDepartamento'+ departamento.Nombre} 
                             xs={12}
                             sm={12}
                             md= { 5 }
                             xl={ 3 }
                         >
                             <DepartamentCard 
-                                key={ departamento.Nombre }
+                                key={ 'DepartamentCard' + departamento.Nombre }
                                 Nombre = { departamento.Nombre }
                             />   
                         </ Grid>
@@ -70,19 +73,28 @@ export default function Homepage(){
             </Typography>
             {
                     plantillas.map( ( plantilla ) =>(
-                        <Grid 
-                            item 
-                            key={'gridItem'+ plantilla.Nombre} 
-                            xs={12}
-                            sm={12}
-                            md= { 5 }
-                            xl={ 3 }
-                        >
-                            <PlantillaCard 
-                                key={ plantilla.plantilla_Nombre }
-                                Nombre = { plantilla.plantilla_Nombre }
-                            />   
-                        </ Grid>
+                        <Button
+                            key={ 'buttonPlantilla' + plantilla.plantilla_idPlantilla }
+                            LinkComponent={Link}
+                            to = { '/formulario-documento' }
+                            onClick = { () => {
+                                dispatch( loadPlantilla( plantilla ) ) ;
+                            }  }
+                        > 
+                            <Grid 
+                                item 
+                                key={'gridItemPlantilla'+ plantilla.plantilla_Nombre} 
+                                xs={12}
+                                sm={12}
+                                md= { 5 }
+                                xl={ 3 }
+                            >
+                                <HomepagePlantillaCard 
+                                    key={ 'PlantillaCard' + plantilla.plantilla_Nombre }
+                                    Nombre = { plantilla.plantilla_Nombre }
+                                />   
+                            </ Grid>      
+                        </Button>
                     )) 
             }
 

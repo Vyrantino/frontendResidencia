@@ -131,7 +131,7 @@ export default function PerfilDatos(){
                         {
                             datosUsuario.map( ( datoUsuario ) => (
                                 <TableRow
-                                    key={ datoUsuario.idDatoUsuario }
+                                    key={ ' datoUsuario ' + datoUsuario.datos_idDato }
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
                                     <TableCell align='left'  >

@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const plantillasSlice = createSlice( {
     name: 'plantillasSlice' , 
     initialState: {
-        idPlantilla: null ,
+        plantilla: [] ,
     },
     reducers: {
         loadPlantilla: ( state , action ) =>{
-            state.idPlantilla = action.payload 
+            state.plantilla = action.payload 
         },
     }
 } ) ;

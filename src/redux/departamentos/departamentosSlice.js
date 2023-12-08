@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const departamentosSlice = createSlice( {
     name: 'departamentosSlice' , 
     initialState: {
-        departamentos: [] ,
+        departamento: [] ,
     },
     reducers: {
         loadDepartamento: ( state , action ) =>{
-            state.departamentos = action.payload 
+            state.departamento = action.payload 
         },
     }
 } ) ;
